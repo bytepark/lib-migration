@@ -1,5 +1,5 @@
 {
-    "name": "bytepark/migration",
+    "name": "bytepark/lib-migration",
     "type": "library",
     "description": "bytepark Component - Lightweight and flexible database schema and data migration toolkit",
     "keywords": ["library", "database", "migration"],
@@ -19,12 +19,6 @@
         "ext-pdo_sqlite": "*",
         "bytepark/phpqatools" : "~1.0",
         "phpdocumentor/phpdocumentor": "~2.0"
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://composer.bytenetz.de"
-        }
-    ]
+    }
 }
 
