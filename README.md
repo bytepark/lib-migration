@@ -1,6 +1,7 @@
-[![Build Status](https://secure.travis-ci.org/bytepark/lib-migration.png?branch=master)](http://travis-ci.org/bytepark/lib-migration)
-
 # Database migration library
+
+## Status
+[![alt text][2]][1]
 
 Lightweight database migration library.
 
@@ -88,4 +89,7 @@ The content of the specific files is then the pure sql to query against the data
 
 ## Bridging Components
 
-Will soon be linked here. 
+Will soon be linked here.
+ 
+[1]: https://travis-ci.org/bytepark/lib-migration
+[2]: https://api.travis-ci.org/bytepark/lib-migration.svg (build status)
