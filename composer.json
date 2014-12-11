@@ -16,9 +16,9 @@
     },
     "target-dir": "Bytepark/Component/Migration",
     "require-dev" : {
-        "ext-pdo_sqlite": "*",
-        "bytepark/phpqatools" : "~1.0",
+        "ext-pdo_sqlite": "*"
+    },
+    "suggest": {
         "phpdocumentor/phpdocumentor": "~2.0"
     }
 }
-
