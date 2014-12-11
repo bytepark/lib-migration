@@ -1,0 +1,17 @@
+*~
+.ssh/*
+thumbs.db
+.DS_Store
+.project
+.buildpath
+.settings
+.externalToolBuilders
+.idea
+
+build
+
+composer.phar
+vendor
+
+!.gitignore
+!empty

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lib-migration" default="build" basedir=".">
+    <property name="qa-bin" location="${basedir}/vendor/bin" />
+
+    <target name="clean" description="Clean up and create artifact directories">
+        <delete dir="${basedir}/build/api"/>
+        <delete dir="${basedir}/build/code-browser"/>
+        <delete dir="${basedir}/build/coverage"/>
+        <delete dir="${basedir}/build/logs"/>
+        <delete dir="${basedir}/build/pdepend"/>
+
+        <mkdir dir="${basedir}/build/api"/>
+        <mkdir dir="${basedir}/build/code-browser"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
+    </target>
+
+    <target name="composer" description="prepare composer" depends="load-composer">
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="selfupdate"/>
+        </exec>
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="update"/>
+        </exec>
+    </target>
+
+    <target name="check-composer.phar"
+            description="Checks if the composer.phar is present">
+        <available file="${basedir}/composer.phar" property="present.composer"/>
+    </target>
+
+    <target name="load-composer" description="Loads composer.phar"
+            unless="present.composer" depends="check-composer.phar">
+        <exec executable="curl">
+            <arg value="-o"/>
+            <arg value="composer.phar"/>
+            <arg value="https://getcomposer.org/composer.phar"/>
+        </exec>
+        <chmod file="composer.phar" perm="a+x"/>
+    </target>
+
+    <target name="phpunit"
+            description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
+        <exec executable="${qa-bin}/phpunit" failonerror="true">
+            <arg line="-c phpunit.xml.dist"/>
+        </exec>
+    </target>
+
+    <target name="parallelTasks"
+            description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 4 threads.">
+        <parallel threadCount="4">
+            <sequential>
+                <antcall target="pdepend"/>
+                <antcall target="phpmd"/>
+            </sequential>
+            <antcall target="phpcpd"/>
+            <antcall target="phpcs"/>
+            <antcall target="phpdoc"/>
+            <antcall target="phploc"/>
+        </parallel>
+    </target>
+
+    <target name="pdepend"
+            description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+        <exec executable="${qa-bin}/pdepend">
+            <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
+              --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
+              --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
+              --ignore=build,tests,vendor
+              ${basedir}"/>
+        </exec>
+    </target>
+
+    <target name="phpmd" description="Generate pmd.xml using PHPMD">
+        <exec executable="${qa-bin}/phpmd">
+            <arg line="${basedir}
+              xml
+              codesize,design,naming,unusedcode
+              --suffixes .php
+              --exclude build,tests,vendor
+              --reportfile ${basedir}/build/logs/pmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
+        <exec executable="${qa-bin}/phpcpd">
+            <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml --exclude=build --exclude=tests --exclude=vendor ${basedir}"/>
+        </exec>
+    </target>
+
+    <target name="phploc" description="Generate phploc.csv">
+        <exec executable="${qa-bin}/phploc">
+            <arg line="--log-csv ${basedir}/build/logs/phploc.csv --exclude=build --exclude=tests --exclude=vendor ${basedir}"/>
+        </exec>
+    </target>
+
+    <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+        <exec executable="${qa-bin}/phpcs" output="/dev/null">
+            <arg line="--report=checkstyle
+              --extensions=php
+              --report-file=${basedir}/build/logs/checkstyle.xml
+              --ignore=${basedir}/build,${basedir}/tests,${basedir}/vendor
+              --standard=PSR2
+              ${basedir}"/>
+        </exec>
+    </target>
+
+    <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+        <exec executable="${qa-bin}/phpcb" output="/dev/null">
+            <arg line="--log    ${basedir}/build/logs
+              --ignore=${basedir}/vendor,${basedir}/lib/vendor,${basedir}/lib/symfony,${basedir}/test,${basedir}/build,${basedir}/doc
+              --source ${basedir}
+              --output ${basedir}/build/code-browser" />
+        </exec>
+    </target>
+
+    <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
+        <exec executable="${qa-bin}/phpdoc">
+            <arg line="-d ${basedir} -t ${basedir}/build/api" />
+        </exec>
+    </target>
+
+    <target name="build" depends="clean,composer,parallelTasks,phpunit,phpcb"/>
+</project>

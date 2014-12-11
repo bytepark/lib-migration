@@ -1,0 +1,30 @@
+{
+    "name": "bytepark/migration",
+    "type": "library",
+    "description": "bytepark Component - Lightweight and flexible database schema and data migration toolkit",
+    "keywords": ["library", "database", "migration"],
+    "homepage": "http://www.bytepark.de",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bytepark GmbH",
+            "email": "code@bytepark.de"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Bytepark\\Component\\Migration": "" }
+    },
+    "target-dir": "Bytepark/Component/Migration",
+    "require-dev" : {
+        "ext-pdo_sqlite": "*",
+        "bytepark/phpqatools" : "~1.0",
+        "phpdocumentor/phpdocumentor": "~2.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://composer.bytenetz.de"
+        }
+    ]
+}
+

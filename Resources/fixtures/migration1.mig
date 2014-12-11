@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS migration_one_created_table (id INTEGER PRIMARY KEY, some_text VARCHAR(255));

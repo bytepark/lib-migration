@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>lib-migration</title>
+    <parser>
+        <target>build</target>
+    </parser>
+    <transformer>
+        <target>build</target>
+    </transformer>
+    <files>
+        <directory>.</directory>
+        <ignore>build/*</ignore>
+        <ignore>Resources/*</ignore>
+        <ignore>tests/*</ignore>
+        <ignore>vendor/*</ignore>
+    </files>
+</phpdoc>
