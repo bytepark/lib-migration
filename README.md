@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/bytepark/lib-migration.png?branch=master)](http://travis-ci.org/bytepark/lib-migration)
+
 # Database migration library
 
 Lightweight database migration library.
