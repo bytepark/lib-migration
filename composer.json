@@ -16,6 +16,7 @@
     },
     "target-dir": "Bytepark/Component/Migration",
     "require-dev" : {
-        "ext-pdo_sqlite": "*"
+        "ext-pdo_sqlite": "*",
+        "phpunit/phpunit": "~4.0"
     }
 }
