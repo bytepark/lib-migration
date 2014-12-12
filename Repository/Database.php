@@ -94,9 +94,32 @@ class Database extends AbstractRepository
     }
 
     /**
+     * Next to replacing the unit internally, the entry has to be also removed
+     * in the database
+     *
+     * @param UnitOfWork $replacement
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitNotPresentException
+     *
+     * @return void
+     */
+    public function replace(UnitOfWork $replacement)
+    {
+        parent::replace($replacement);
+
+        $this->connection->execute(
+            sprintf("DELETE FROM %s WHERE unique_id = ?", $this->tableName),
+            array (
+                $replacement->getUniqueId(),
+            )
+        );
+        unset($this->presentUidsOnConstruction[$replacement->getUniqueId()]);
+    }
+
+    /**
      * Setup of the database
      *
-     * @return bool
+     * @return void
      */
     private function setupDatabaseTable()
     {

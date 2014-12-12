@@ -21,7 +21,6 @@ namespace Bytepark\Component\Migration\Test;
 use Bytepark\Component\Migration\UnitOfWork;
 use Bytepark\Component\Migration\UnitOfWork\Uid;
 use Bytepark\Component\Migration\UnitOfWork\Workload;
-use Zend\I18n\Validator\DateTime;
 
 /**
  * Test cases for the UnitOfWork
