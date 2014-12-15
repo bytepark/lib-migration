@@ -79,7 +79,7 @@ class GroupedFilesystem extends AbstractRepository
     {
         foreach ($directory as $fileInfo) {
             /* @var $fileInfo \SplFileInfo */
-            $subDirectory = new \FilesystemIterator($fileInfo->getPath());
+            $subDirectory = new \FilesystemIterator($fileInfo->getRealPath());
             $this->buildFromSubdirectory($subDirectory);
         }
     }
