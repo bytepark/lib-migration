@@ -57,6 +57,8 @@ abstract class AbstractRepository implements Repository
             }
         }
 
+        $diffRepository->sort();
+
         return $diffRepository;
     }
 
@@ -172,5 +174,15 @@ abstract class AbstractRepository implements Repository
     public function contains(UnitOfWork $unitOfWork)
     {
         return isset($this->unitOfWorkStore[$unitOfWork->getUniqueId()]);
+    }
+
+    /**
+     * Sorts the units of work by their unique id
+     *
+     * @return void
+     */
+    public function sort()
+    {
+        ksort($this->unitOfWorkStore);
     }
 }
