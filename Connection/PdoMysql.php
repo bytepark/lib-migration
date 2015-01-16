@@ -42,7 +42,7 @@ class PdoMysql extends AbstractPdo
      */
     public function __construct($host, $database, $user, $password)
     {
-        $dsn = sprintf('mysql:dbname=%s;host=%s', $database, $host);
+        $dsn = sprintf('mysql:dbname=%s;host=%s;charset=UTF8', $database, $host);
         $this->connection = new \PDO($dsn, $user, $password);
         $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
