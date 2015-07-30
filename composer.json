@@ -12,7 +12,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Bytepark\\Component\\Migration": "" }
+        "psr-4": { "Bytepark\\Component\\Migration\\": "src" }
     },
     "target-dir": "Bytepark/Component/Migration",
     "require-dev" : {
