@@ -42,7 +42,7 @@ class Workload
      *
      * @param string $workload The workload of the migration
      *
-     * @throws InvalidArgumentException On missing guards
+     * @throws \InvalidArgumentException On missing guards
      */
     public function __construct($workload)
     {

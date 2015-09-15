@@ -55,7 +55,7 @@ class Uid
      *
      * @param Uid $other The Uid to compare for equality
      *
-     * @return boolean true, if the uid values equal, flase otherwise
+     * @return boolean true, if the uid values equal, false otherwise
      */
     public function equals(Uid $other)
     {

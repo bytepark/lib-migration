@@ -18,9 +18,6 @@
 
 namespace Bytepark\Component\Migration\Lock;
 
-use Bytepark\Component\Migration\Lock\Filesystem;
-use Bytepark\Component\Migration\Exception\LockNotAcquirableException;
-
 /**
  * Filesystem lock implementation of bytepark database migration Toolkit
  *

@@ -103,7 +103,7 @@ class Manager
     }
 
     /**
-     * Guards the there are no units of work in the history repository thet are not
+     * Guards the there are no units of work in the history repository that are not
      * also in the source repository
      *
      * @throws Exception\HistoryHasSourceUnknownUnitsOfWorkException

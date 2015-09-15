@@ -21,7 +21,7 @@ namespace Bytepark\Component\Migration;
 use Bytepark\Component\Migration\UnitOfWork\Uid;
 
 /**
-* Repositroy interface for migrations
+* Repository interface for migrations
 *
 * @category   Bytepark
 * @package    Migration
@@ -56,7 +56,7 @@ interface Repository extends \Countable, \Iterator
      *
      * @param Uid $uniqueId The Uid of the unit to find
      *
-     * @throws UnitNotFoundException
+     * @throws \Bytepark\Component\Migration\Exception\UnitNotFoundException
      *
      * @return UnitOfWork
      */
@@ -67,7 +67,7 @@ interface Repository extends \Countable, \Iterator
      *
      * @param UnitOfWork $unitOfWork The unit of work to add
      *
-     * @throws UnitIsAlreadyPresentException
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      *
      * @return void
      */
@@ -78,7 +78,7 @@ interface Repository extends \Countable, \Iterator
      *
      * @param UnitOfWork $unitOfWork The unit of work to replace with
      *
-     * @throws UnitNotPresentException
+     * @throws \Bytepark\Component\Migration\Exception\UnitNotPresentException
      *
      * @return void
      */
