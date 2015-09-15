@@ -13,6 +13,7 @@ checks are the responsibility of the user.
 
 ## TODOS / Open Features
 
+- Add a CLI implementation (at best as own component)
 - Add SQL Schema abstraction for database repository / connection
 - Add some error messaging/logging facility
 - Rename Repository interface to Location?
@@ -80,7 +81,7 @@ _.mig_. The set of files is then diffed against the already migrated set, which 
 
 ### Migration file requirements
 
-The single migrations should be named in some sortable syntax to express
+The single migrations should be named in some descending sortable syntax to express
 weak dependencies. Recommended is the naming of the files including a date, datetime
 or timestamp prefix, i.e. 19700101-some-text.mig. The migrations will be processed
 in the given order of the directory scan.
