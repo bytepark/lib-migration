@@ -134,6 +134,23 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(intval($dbCount[0]['cnt']), $this->repository->count());
     }
 
+    public function testReplace()
+    {
+        $unitToReplace = $this->buildUnitOfWork();
+        $replacementUnit = $this->buildUnitOfWork('replaced!');
+        $this->repository->add($unitToReplace);
+        $this->repository->persist();
+        $this->repository->replace($replacementUnit);
+        $this->repository->persist();
+
+        $result = $this->connection->query(
+            sprintf("SELECT * FROM %s", $this->tableName)
+        );
+
+        $this->assertEquals($this->uidValue, $result[0]['unique_id']);
+        $this->assertEquals('replaced!', $result[0]['query']);
+    }
+
     protected function getMemoryConnection()
     {
         return new PdoSqliteMemory();
@@ -146,11 +163,15 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         return  new PdoSqliteFile($dbFile);
     }
 
-    private function buildUnitOfWork()
+    private function buildUnitOfWork($optionalWorkload = '')
     {
+        if ('' === $optionalWorkload) {
+            $optionalWorkload = $this->workloadValue;
+        }
+
         $unitOfWork = new UnitOfWork(
             new Uid($this->uidValue),
-            new Workload($this->workloadValue),
+            new Workload($optionalWorkload),
             $this->dateTime
         );
 
