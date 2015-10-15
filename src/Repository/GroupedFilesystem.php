@@ -48,6 +48,8 @@ class GroupedFilesystem extends AbstractRepository
      * A file system iterator has to be injected.
      *
      * @param \FilesystemIterator $directory The iterator to use
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      */
     public function __construct(\FilesystemIterator $directory)
     {
@@ -74,13 +76,15 @@ class GroupedFilesystem extends AbstractRepository
      * Builds the migrations from the file system
      *
      * @param \FilesystemIterator $directory
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      */
     private function buildMigrations(\FilesystemIterator $directory)
     {
         foreach ($directory as $fileInfo) {
             /* @var $fileInfo \SplFileInfo */
             $subDirectory = new \FilesystemIterator($fileInfo->getRealPath());
-            $this->buildFromSubdirectory($subDirectory);
+            $this->buildFromSubDirectory($subDirectory);
         }
     }
 
@@ -111,6 +115,8 @@ class GroupedFilesystem extends AbstractRepository
      * Otherwise the recursion steps into the directory.
      *
      * @param \FilesystemIterator $directory The directory  to build from
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      */
     private function buildFromSubDirectory(\FilesystemIterator $directory)
     {

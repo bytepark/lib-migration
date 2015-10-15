@@ -73,7 +73,7 @@ class UnitOfWork
      */
     public function getUniqueId()
     {
-        return $this->uniqueId->__toString();
+        return (string) $this->uniqueId;
     }
 
     /**
@@ -85,7 +85,7 @@ class UnitOfWork
      */
     public function getQuery()
     {
-        return $this->workload->__toString();
+        return (string) $this->workload;
     }
 
     /**
@@ -115,7 +115,7 @@ class UnitOfWork
 
         $this->workload = new Workload(
             sprintf(
-                "%s%s",
+                '%s%s',
                 $this->getQuery(),
                 $other->getQuery()
             )

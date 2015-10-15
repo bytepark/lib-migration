@@ -39,6 +39,8 @@ class UnitOfWorkFactory
      *
      * @param \SplFileInfo $fileInfo The fileInfo to build from
      *
+     * @throws \InvalidArgumentException
+     *
      * @return UnitOfWork The instantiated migration
      */
     public static function buildFromSplFileInfo(\SplFileInfo $fileInfo)
@@ -64,6 +66,8 @@ class UnitOfWorkFactory
      * - migrated_at: A valid datetime representation for the constructor of \DateTime
      *
      * @param array $values The values to build from
+     *
+     * @throws \InvalidArgumentException
      *
      * @return UnitOfWork The instantiated migration
      */

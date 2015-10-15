@@ -40,6 +40,8 @@ interface Repository extends \Countable, \Iterator
      *
      * @param Repository $otherRepository The repository to diff to
      *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     *
      * @return Repository The diff
      */
     public function diff(Repository $otherRepository);

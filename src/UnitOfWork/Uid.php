@@ -79,7 +79,7 @@ class Uid
      */
     private function guardUniqueIdIsNonEmptyString()
     {
-        if (!is_string($this->uid) || 0 === strlen(trim($this->uid))) {
+        if (!is_string($this->uid) || '' === (trim($this->uid))) {
             throw new \InvalidArgumentException(
                 'The UID value has to be a non empty string'
             );

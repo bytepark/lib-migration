@@ -46,7 +46,11 @@ class Filesystem implements Lock
     }
 
     /**
-     * @{inheritdoc}
+     * Acquires the lock
+     *
+     * @throws \Bytepark\Component\Migration\Exception\LockNotAcquirableException When lock cannot be acquired
+     *
+     * @return void
      */
     public function acquire()
     {

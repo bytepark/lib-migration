@@ -45,7 +45,16 @@ abstract class AbstractRepository implements Repository
     private $unitOfWorkStore = array();
 
     /**
-     * @{inheritdoc}
+     * Calculates the diff to the given repository
+     *
+     * The method returns a Repository including all Migrations present in this
+     * instance but not the given other repository.
+     *
+     * @param Repository $otherRepository The repository to diff to
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     *
+     * @return Repository The diff
      */
     public function diff(Repository $otherRepository)
     {
@@ -73,11 +82,11 @@ abstract class AbstractRepository implements Repository
      */
     public function find(Uid $uniqueId)
     {
-        if (!isset($this->unitOfWorkStore[$uniqueId->__toString()])) {
+        if (!array_key_exists((string) $uniqueId, $this->unitOfWorkStore)) {
             throw new UnitNotFoundException();
         }
 
-        return $this->unitOfWorkStore[$uniqueId->__toString()];
+        return $this->unitOfWorkStore[(string) $uniqueId];
     }
 
     /**
@@ -153,7 +162,7 @@ abstract class AbstractRepository implements Repository
      */
     public function valid()
     {
-        return !is_null(key($this->unitOfWorkStore));
+        return null !== key($this->unitOfWorkStore);
     }
 
     /**
@@ -173,7 +182,7 @@ abstract class AbstractRepository implements Repository
      */
     public function contains(UnitOfWork $unitOfWork)
     {
-        return isset($this->unitOfWorkStore[$unitOfWork->getUniqueId()]);
+        return array_key_exists($unitOfWork->getUniqueId(), $this->unitOfWorkStore);
     }
 
     /**

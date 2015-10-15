@@ -69,7 +69,7 @@ class Workload
      */
     private function guardWorkloadIsNonEmptyString()
     {
-        if (!is_string($this->workload) || 0 === strlen(trim($this->workload))) {
+        if (!is_string($this->workload) || '' === trim($this->workload)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     '"%s" is not valid workload value',

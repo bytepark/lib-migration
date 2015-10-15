@@ -35,7 +35,7 @@ interface Lock
     /**
      * Acquires the lock
      *
-     * @throws \\Bytepark\Component\Migration\Exception\LockIsAlreadyAcquiredException When lock cannot be acquired
+     * @throws \Bytepark\Component\Migration\Exception\LockNotAcquirableException When lock cannot be acquired
      *
      * @return void
      */

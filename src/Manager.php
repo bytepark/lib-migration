@@ -81,6 +81,9 @@ class Manager
     /**
      * Dispatches the migration process
      *
+     * @throws Exception\HistoryHasSourceUnknownUnitsOfWorkException
+     * @throws Exception\UnitIsAlreadyPresentException
+     *
      * @return void
      */
     public function dispatch()
@@ -107,6 +110,7 @@ class Manager
      * also in the source repository
      *
      * @throws Exception\HistoryHasSourceUnknownUnitsOfWorkException
+     * @throws Exception\UnitIsAlreadyPresentException
      */
     private function guardThatHistoryRepositoryDoesNotHaveMoreUnitsOfWork()
     {
@@ -123,6 +127,8 @@ class Manager
      * Executes the given migration against the database connection
      *
      * @param UnitOfWork $unitOfWork
+     *
+     * @throws Exception\UnitIsAlreadyPresentException
      */
     private function executeMigration(UnitOfWork $unitOfWork)
     {

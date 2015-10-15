@@ -46,6 +46,8 @@ class Filesystem extends AbstractRepository
      * A file system iterator has to be injected.
      *
      * @param \FilesystemIterator $directory The iterator to use
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      */
     public function __construct(\FilesystemIterator $directory)
     {
@@ -69,6 +71,8 @@ class Filesystem extends AbstractRepository
 
     /**
      * Builds the migrations from the file system
+     *
+     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      *
      * @param \FilesystemIterator $directory
      */
