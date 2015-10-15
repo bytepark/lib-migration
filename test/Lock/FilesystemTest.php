@@ -37,12 +37,18 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
      */
     protected $lock;
 
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
         $fileInfo = new \SplFileInfo(TEST_LOCK_FILE);
         $this->lock = new Filesystem($fileInfo);
     }
 
+    /**
+     * @{inheritdoc}
+     */
     protected function tearDown()
     {
         if (is_file(TEST_LOCK_FILE)) {

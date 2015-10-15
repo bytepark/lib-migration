@@ -32,10 +32,16 @@ use Bytepark\Component\Migration\Lock\FilesystemWithAutoRelease;
  */
 class FilesystemWithAutoReleaseTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
     }
 
+    /**
+     * @{inheritdoc}
+     */
     protected function tearDown()
     {
         if (is_file(TEST_LOCK_FILE)) {

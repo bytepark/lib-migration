@@ -48,8 +48,8 @@ class UidTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\UnitOfWork\Uid', $this->uid);
-        $this->assertEquals('my-unique-identifier', $this->uid->__toString());
+        static::assertInstanceOf('Bytepark\Component\Migration\UnitOfWork\Uid', $this->uid);
+        static::assertEquals('my-unique-identifier', (string) $this->uid);
     }
 
     public function testConstructionGuardDeniesInvalidUniqueId()
@@ -61,12 +61,12 @@ class UidTest extends \PHPUnit_Framework_TestCase
 
     public function testEqualsReturnsTrueForSameUid()
     {
-        $this->assertTrue($this->uid->equals($this->uid));
+        static::assertTrue($this->uid->equals($this->uid));
     }
 
     public function testEqualsReturnsFalseForDifferentUid()
     {
-        $this->assertFalse($this->uid->equals(new Uid('im-not-matching')));
+        static::assertFalse($this->uid->equals(new Uid('im-not-matching')));
     }
 }
 ?>

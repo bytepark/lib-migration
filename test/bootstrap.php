@@ -21,7 +21,9 @@ define('TEST_GROUPED_FILE_FIXTURE_PATH', __DIR__ . '/../Resources/grouped_fixtur
 define('TEST_DB_FIXTURE_FILE', __DIR__ . '/../Resources/db-fixture.sqlite');
 define('TEST_LOCK_FILE', __DIR__ . '/../Resources/.migration-lock');
 
-if (!is_file($autoloadFile = __DIR__.'/../vendor/autoload.php')) {
+$autoloadFile = __DIR__ . '/../vendor/autoload.php';
+
+if (!is_file($autoloadFile)) {
     throw new \LogicException('Could not find autoload.php in vendor/. Did you run "composer update"?');
 }
 

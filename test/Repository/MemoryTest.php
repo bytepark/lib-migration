@@ -33,8 +33,14 @@ use Bytepark\Component\Migration\UnitOfWork;
  */
 class MemoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Bytepark\Component\Migration\Repository
+     */
     protected $repository;
 
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
         $this->repository = new Memory();
@@ -42,16 +48,16 @@ class MemoryTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\Repository\Memory', $this->repository);
+        static::assertInstanceOf('Bytepark\Component\Migration\Repository\Memory', $this->repository);
     }
 
     public function testInitialMemoryRepositoryIsEmpty()
     {
-        $this->assertEquals(0, $this->repository->count());
+        static::assertEquals(0, $this->repository->count());
     }
 
     public function testPersisting()
     {
-        $this->assertTrue($this->repository->persist());
+        static::assertTrue($this->repository->persist());
     }
 }

@@ -18,7 +18,6 @@
 
 namespace Bytepark\Component\Migration\Test;
 
-use Bytepark\Component\Migration\Lock\Filesystem;
 use Bytepark\Component\Migration\Manager;
 use Bytepark\Component\Migration\Connection;
 use Bytepark\Component\Migration\Connection\PdoSqliteMemory;
@@ -46,17 +45,17 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     protected $connection;
 
     /**
-     * @var Repository
+     * @var \Bytepark\Component\Migration\Repository
      */
     protected $sourceRepository;
 
     /**
-     * @var Repository
+     * @var \Bytepark\Component\Migration\Repository
      */
     protected $historyRepository;
 
     /**
-     * @var Lock
+     * @var \Bytepark\Component\Migration\Lock
      */
     protected $lock;
 
@@ -65,6 +64,9 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected $manager;
 
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
         $this->connection = new PdoSqliteMemory();
@@ -80,6 +82,9 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @{inheritdoc}
+     */
     public function tearDown()
     {
         if (is_file(TEST_LOCK_FILE)) {
@@ -89,17 +94,17 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testManagerConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\Manager', $this->manager);
+        static::assertInstanceOf('Bytepark\Component\Migration\Manager', $this->manager);
     }
 
     public function testDispatchRepositoryCounts()
     {
         $this->sourceRepository->add($this->buildUnitOfWork());
-        $this->assertEquals(1, $this->sourceRepository->count());
-        $this->assertEquals(0, $this->historyRepository->count());
+        static::assertEquals(1, $this->sourceRepository->count());
+        static::assertEquals(0, $this->historyRepository->count());
         $this->manager->dispatch();
-        $this->assertEquals(1, $this->sourceRepository->count());
-        $this->assertEquals(1, $this->historyRepository->count());
+        static::assertEquals(1, $this->sourceRepository->count());
+        static::assertEquals(1, $this->historyRepository->count());
     }
 
     public function testDispatchWithActiveGuard()

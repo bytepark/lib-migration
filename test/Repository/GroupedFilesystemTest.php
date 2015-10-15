@@ -40,16 +40,22 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
     protected $filesystemIterator;
 
     /**
-     * @var Repository
+     * @var \Bytepark\Component\Migration\Repository
      */
     protected $repository;
 
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
         $this->filesystemIterator = new \FilesystemIterator(TEST_GROUPED_FILE_FIXTURE_PATH);
         $this->repository = new GroupedFilesystem($this->filesystemIterator);
     }
 
+    /**
+     * @{inheritdoc}
+     */
     protected function tearDown()
     {
         $fileName = 'persisting-test.mig';
@@ -65,12 +71,12 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\Repository\GroupedFilesystem', $this->repository);
+        static::assertInstanceOf('Bytepark\Component\Migration\Repository\GroupedFilesystem', $this->repository);
     }
 
     public function testFilesAreLoadedOnConstruction()
     {
-        $this->assertEquals(count($this->filesystemIterator), $this->repository->count());
+        static::assertEquals(count($this->filesystemIterator), $this->repository->count());
     }
 
     public function testWorkloadsMatchFileContents()
@@ -78,7 +84,7 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
         foreach ($this->repository as $uid => $unitOfWork) {
             /* @var $unitOfWork UnitOfWork */
             $fileName = TEST_FILE_FIXTURE_PATH . '/' . $uid;
-            $this->assertEquals(file_get_contents($fileName), $unitOfWork->getQuery());
+            static::assertEquals(file_get_contents($fileName), $unitOfWork->getQuery());
         }
     }
 
@@ -97,8 +103,8 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
         $this->repository->add($unitOfWorkToPersist);
         $wasSuccess = $this->repository->persist();
 
-        $this->assertTrue($wasSuccess);
-        $this->assertFileExists($filePath);
-        $this->assertEquals($fileContent, file_get_contents($filePath));
+        static::assertTrue($wasSuccess);
+        static::assertFileExists($filePath);
+        static::assertEquals($fileContent, file_get_contents($filePath));
     }
 }

@@ -43,12 +43,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
     protected $tableName;
 
     /**
-     * @var Connection
+     * @var \Bytepark\Component\Migration\Connection
      */
     protected $connection;
 
     /**
-     * @var Repository
+     * @var \Bytepark\Component\Migration\Repository
      */
     protected $repository;
 
@@ -67,6 +67,9 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
      */
     private $dateTime;
 
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
         $this->tableName = 'test_table';
@@ -77,15 +80,15 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\Repository\Database', $this->repository);
+        static::assertInstanceOf('Bytepark\Component\Migration\Repository\Database', $this->repository);
     }
 
     public function testHistoryTableIsPresentAfterConstruction()
     {
         $tableName = 'test_table_not_existent';
         $connection = $this->getMemoryConnection();
-        $repository = new Database($connection, $tableName);
-        $this->assertTrue($connection->execute(sprintf('SELECT * FROM %s;', $tableName)));
+        new Database($connection, $tableName);
+        static::assertTrue($connection->execute(sprintf('SELECT * FROM %s;', $tableName)));
     }
 
     public function testWorkloadAddedOnConstruction()
@@ -94,9 +97,9 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $repository = new Database($connection, $this->tableName);
 
         $dbCount = $connection->query(
-            sprintf("SELECT COUNT(id) AS cnt FROM %s", $this->tableName)
+            sprintf('SELECT COUNT(id) AS cnt FROM %s', $this->tableName)
         );
-        $this->assertEquals(intval($dbCount[0]['cnt']), $repository->count());
+        static::assertEquals((int) $dbCount[0]['cnt'], $repository->count());
     }
 
     public function testPersisting()
@@ -106,14 +109,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $wasSuccess = $this->repository->persist();
 
         $result = $this->connection->query(
-            sprintf("SELECT * FROM %s", $this->tableName)
+            sprintf('SELECT * FROM %s', $this->tableName)
         );
 
-        $this->assertTrue($wasSuccess);
-        $this->assertEquals($this->repository->count(), count($result));
-        $this->assertEquals($this->uidValue, $result[0]['unique_id']);
-        $this->assertEquals($this->workloadValue, $result[0]['query']);
-        $this->assertEquals($this->dateTime->format('Y-m-d H:i:s'), $result[0]['migrated_at']);
+        static::assertTrue($wasSuccess);
+        static::assertEquals($this->repository->count(), count($result));
+        static::assertEquals($this->uidValue, $result[0]['unique_id']);
+        static::assertEquals($this->workloadValue, $result[0]['query']);
+        static::assertEquals($this->dateTime->format('Y-m-d H:i:s'), $result[0]['migrated_at']);
     }
 
     public function testPersistingProducesNoDuplicates()
@@ -122,16 +125,16 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $this->repository->add($unitOfWorkToPersist);
 
         $firstPersistingWasSuccessful = $this->repository->persist();
-        $this->assertTrue($firstPersistingWasSuccessful);
+        static::assertTrue($firstPersistingWasSuccessful);
 
         $secondPersistingWasSuccessful = $this->repository->persist();
-        $this->assertTrue($secondPersistingWasSuccessful);
+        static::assertTrue($secondPersistingWasSuccessful);
 
         $dbCount = $this->connection->query(
-            sprintf("SELECT count(unique_id) AS cnt FROM %s", $this->tableName)
+            sprintf('SELECT count(unique_id) AS cnt FROM %s', $this->tableName)
         );
 
-        $this->assertEquals(intval($dbCount[0]['cnt']), $this->repository->count());
+        static::assertEquals((int) $dbCount[0]['cnt'], $this->repository->count());
     }
 
     public function testReplace()
@@ -144,11 +147,11 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
         $this->repository->persist();
 
         $result = $this->connection->query(
-            sprintf("SELECT * FROM %s", $this->tableName)
+            sprintf('SELECT * FROM %s', $this->tableName)
         );
 
-        $this->assertEquals($this->uidValue, $result[0]['unique_id']);
-        $this->assertEquals('replaced!', $result[0]['query']);
+        static::assertEquals($this->uidValue, $result[0]['unique_id']);
+        static::assertEquals('replaced!', $result[0]['query']);
     }
 
     protected function getMemoryConnection()

@@ -22,6 +22,7 @@ use Bytepark\Component\Migration\Repository\Filesystem;
 use Bytepark\Component\Migration\UnitOfWork;
 use Bytepark\Component\Migration\UnitOfWork\Uid;
 use Bytepark\Component\Migration\UnitOfWork\Workload;
+
 /**
  * Test cases for the filesystem repository
  *
@@ -40,16 +41,22 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
     protected $filesystemIterator;
 
     /**
-     * @var Repository
+     * @var \Bytepark\Component\Migration\Repository
      */
     protected $repository;
 
+    /**
+     * @{inheritdoc}
+     */
     protected function setUp()
     {
         $this->filesystemIterator = new \FilesystemIterator(TEST_FILE_FIXTURE_PATH);
         $this->repository = new Filesystem($this->filesystemIterator);
     }
 
+    /**
+     * @{inheritdoc}
+     */
     protected function tearDown()
     {
         $fileName = 'persisting-test.mig';
@@ -63,12 +70,12 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\Repository\Filesystem', $this->repository);
+        static::assertInstanceOf('Bytepark\Component\Migration\Repository\Filesystem', $this->repository);
     }
 
     public function testFilesAreLoadedOnConstruction()
     {
-        $this->assertEquals(count($this->filesystemIterator), $this->repository->count());
+        static::assertEquals(count($this->filesystemIterator), $this->repository->count());
     }
 
     public function testWorkloadsMatchFileContents()
@@ -76,7 +83,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         foreach ($this->repository as $uid => $unitOfWork) {
             /* @var $unitOfWork UnitOfWork */
             $fileName = TEST_FILE_FIXTURE_PATH . '/' . $uid;
-            $this->assertEquals(file_get_contents($fileName), $unitOfWork->getQuery());
+            static::assertEquals(file_get_contents($fileName), $unitOfWork->getQuery());
         }
     }
 
@@ -96,9 +103,9 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->repository->add($unitOfWorkToPersist);
         $wasSuccess = $this->repository->persist();
 
-        $this->assertTrue($wasSuccess);
-        $this->assertFileExists($filePath);
-        $this->assertEquals($fileContent, file_get_contents($filePath));
+        static::assertTrue($wasSuccess);
+        static::assertFileExists($filePath);
+        static::assertEquals($fileContent, file_get_contents($filePath));
     }
 
     public function testFindOnNonExistingUnitRaisesException()
@@ -113,7 +120,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->repository->add($unit);
         $unitFromRepo = $this->repository->find(new Uid('persisting-test.mig'));
 
-        $this->assertEquals($unitFromRepo, $unit);
+        static::assertEquals($unitFromRepo, $unit);
     }
 
     public function testMultipleAddRaisesException()
@@ -141,7 +148,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->repository->replace($replacementUnit);
         $this->repository->persist();
 
-        $this->assertEquals('replaced!', file_get_contents($filePath));
+        static::assertEquals('replaced!', file_get_contents($filePath));
     }
 
     private function buildUnitOfWork($optionalWorkload = 'some test irrelevant workload')

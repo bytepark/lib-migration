@@ -40,6 +40,7 @@ class WorkloadTest extends \PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
+     *
      */
     protected function setUp()
     {
@@ -48,8 +49,8 @@ class WorkloadTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\UnitOfWork\Workload', $this->workload);
-        $this->assertEquals('my-workload', $this->workload->__toString());
+        static::assertInstanceOf('Bytepark\Component\Migration\UnitOfWork\Workload', $this->workload);
+        static::assertEquals('my-workload', (string) $this->workload);
     }
 
     public function testConstructionGuardDeniesInvalidWorkload()
@@ -59,4 +60,3 @@ class WorkloadTest extends \PHPUnit_Framework_TestCase
         new Workload(null);
     }
 }
-?>

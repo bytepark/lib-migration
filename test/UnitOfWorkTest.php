@@ -63,31 +63,30 @@ class UnitOfWorkTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\UnitOfWork', $this->unitOfWork);
+        static::assertInstanceOf('Bytepark\Component\Migration\UnitOfWork', $this->unitOfWork);
     }
 
     public function testMergeRaisesExceptionOnDifferentUid()
     {
-        $unmergeableUnit = new UnitOfWork(new Uid('unmergable-uid'), $this->workload, new \DateTime());
+        $enumerableUnit = new UnitOfWork(new Uid('non-passing-uid'), $this->workload, new \DateTime());
         $this->setExpectedException('\InvalidArgumentException');
-        $this->unitOfWork->merge($unmergeableUnit);
+        $this->unitOfWork->merge($enumerableUnit);
     }
 
     public function testMerge()
     {
         $this->unitOfWork->merge($this->buildUnit('-and-some-more-merged'));
 
-        $this->assertEquals('my-workload-and-some-more-merged', $this->unitOfWork->getQuery());
+        static::assertEquals('my-workload-and-some-more-merged', $this->unitOfWork->getQuery());
     }
 
     private function buildUnit($optionalWorkload = '')
     {
         return new UnitOfWork(
             $this->uid,
-            strlen($optionalWorkload) === 0 ? $this->workload : new Workload($optionalWorkload),
+            $optionalWorkload === '' ? $this->workload : new Workload($optionalWorkload),
             new \DateTime()
         );
 
     }
 }
-?>
