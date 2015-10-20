@@ -58,14 +58,14 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        $this->assertInstanceOf('Bytepark\Component\Migration\Lock', $this->lock);
+        static::assertInstanceOf('Bytepark\Component\Migration\Lock', $this->lock);
     }
 
     public function testAcquire()
     {
         $this->lock->acquire();
 
-        $this->assertFileExists(TEST_LOCK_FILE);
+        static::assertFileExists(TEST_LOCK_FILE);
     }
 
     public function testAcquireThrowsLockNotAcquirableException()
@@ -92,6 +92,6 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->lock->acquire();
         $this->lock->release();
 
-        $this->assertFileNotExists(TEST_LOCK_FILE);
+        static::assertFileNotExists(TEST_LOCK_FILE);
     }
 }

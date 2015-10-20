@@ -52,7 +52,7 @@ class FilesystemWithAutoReleaseTest extends \PHPUnit_Framework_TestCase
     public function testSuccessfulConstruction()
     {
         $lock = $this->buildLockWithTimeDelta(1);
-        $this->assertInstanceOf('Bytepark\Component\Migration\Lock\FilesystemWithAutoRelease', $lock);
+        static::assertInstanceOf('Bytepark\Component\Migration\Lock\FilesystemWithAutoRelease', $lock);
     }
 
     public function testSuccessfulAcquireAfterTimeDelta()
@@ -65,7 +65,7 @@ class FilesystemWithAutoReleaseTest extends \PHPUnit_Framework_TestCase
 
         $lock2->acquire();
 
-        $this->assertFileExists(TEST_LOCK_FILE);
+        static::assertFileExists(TEST_LOCK_FILE);
     }
 
     public function testAcquireThrowsLockNotAcquirableExceptionBeforeTimeDelta()

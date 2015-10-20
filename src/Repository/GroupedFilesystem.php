@@ -43,17 +43,27 @@ class GroupedFilesystem extends AbstractRepository
     private $basePath;
 
     /**
+     * @var string
+     */
+    private $extension;
+
+    /**
      * Instantiates the repository for the underlying file system
      *
      * A file system iterator has to be injected.
      *
+     * The default file extension that will be included in the scan is "mig".
+     *
      * @param \FilesystemIterator $directory The iterator to use
+     * @param string              $extension The file extension to look for
      *
      * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     * @throws \InvalidArgumentException
      */
-    public function __construct(\FilesystemIterator $directory)
+    public function __construct(\FilesystemIterator $directory, $extension = 'mig')
     {
         $this->basePath = $directory->getPath();
+        $this->extension = $extension;
         $this->buildMigrations($directory);
     }
 
@@ -78,13 +88,16 @@ class GroupedFilesystem extends AbstractRepository
      * @param \FilesystemIterator $directory
      *
      * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     * @throws \InvalidArgumentException
      */
     private function buildMigrations(\FilesystemIterator $directory)
     {
         foreach ($directory as $fileInfo) {
             /* @var $fileInfo \SplFileInfo */
-            $subDirectory = new \FilesystemIterator($fileInfo->getRealPath());
-            $this->buildFromSubDirectory($subDirectory);
+            if ($fileInfo->isDir()) {
+                $subDirectory = new \FilesystemIterator($fileInfo->getRealPath());
+                $this->buildFromSubDirectory($subDirectory);
+            }
         }
     }
 
@@ -114,10 +127,12 @@ class GroupedFilesystem extends AbstractRepository
      * Recursion ends when files are located in the given filesystem iterator.
      * Otherwise the recursion steps into the directory.
      *
-     * @param \FilesystemIterator $directory The directory  to build from
+     * @param \FilesystemIterator $directory The directory to build from
      *
      * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     * @throws \InvalidArgumentException
      */
+
     private function buildFromSubDirectory(\FilesystemIterator $directory)
     {
         /* @var $fileInfo \SplFileInfo */
@@ -125,7 +140,7 @@ class GroupedFilesystem extends AbstractRepository
             if ($fileInfo->isDir()) {
                 $subDirectory = new \FilesystemIterator($fileInfo->getRealPath());
                 $this->buildFromSubDirectory($subDirectory);
-            } else {
+            } elseif ($fileInfo->isFile() && $fileInfo->getExtension() === $this->extension) {
                 $migration = UnitOfWorkFactory::buildFromSplFileInfo($fileInfo);
                 $this->add($migration);
             }

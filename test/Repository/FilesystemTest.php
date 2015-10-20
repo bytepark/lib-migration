@@ -36,9 +36,9 @@ use Bytepark\Component\Migration\UnitOfWork\Workload;
 class FilesystemTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \FilesystemIterator
+     * @var \GlobIterator
      */
-    protected $filesystemIterator;
+    protected $source;
 
     /**
      * @var \Bytepark\Component\Migration\Repository
@@ -50,8 +50,8 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->filesystemIterator = new \FilesystemIterator(TEST_FILE_FIXTURE_PATH);
-        $this->repository = new Filesystem($this->filesystemIterator);
+        $this->source = new \FilesystemIterator(TEST_FILE_FIXTURE_PATH);
+        $this->repository = new Filesystem($this->source, 'mig');
     }
 
     /**
@@ -75,7 +75,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testFilesAreLoadedOnConstruction()
     {
-        static::assertEquals(count($this->filesystemIterator), $this->repository->count());
+        static::assertEquals(count(glob(TEST_FILE_FIXTURE_PATH.'/*.mig')), $this->repository->count());
     }
 
     public function testWorkloadsMatchFileContents()
@@ -149,6 +149,11 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
         $this->repository->persist();
 
         static::assertEquals('replaced!', file_get_contents($filePath));
+    }
+
+    public function testNeverEverMigrateHiddenFiles()
+    {
+
     }
 
     private function buildUnitOfWork($optionalWorkload = 'some test irrelevant workload')

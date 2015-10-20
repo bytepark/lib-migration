@@ -41,17 +41,27 @@ class Filesystem extends AbstractRepository
     private $basePath;
 
     /**
+     * @var string
+     */
+    private $extension;
+
+    /**
      * Instantiates the repository for the underlying file system
      *
      * A file system iterator has to be injected.
      *
+     * The default file extension that will be included in the scan is "mig".
+     *
      * @param \FilesystemIterator $directory The iterator to use
+     * @param string              $extension The file extension to look for
      *
      * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     * @throws \InvalidArgumentException
      */
-    public function __construct(\FilesystemIterator $directory)
+    public function __construct(\FilesystemIterator $directory, $extension = 'mig')
     {
         $this->basePath = $directory->getPath();
+        $this->extension = $extension;
         $this->buildMigrations($directory);
     }
 
@@ -73,6 +83,7 @@ class Filesystem extends AbstractRepository
      * Builds the migrations from the file system
      *
      * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
+     * @throws \InvalidArgumentException
      *
      * @param \FilesystemIterator $directory
      */
@@ -80,8 +91,10 @@ class Filesystem extends AbstractRepository
     {
         foreach ($directory as $fileInfo) {
             /* @var $fileInfo \SplFileInfo */
-            $migration = UnitOfWorkFactory::buildFromSplFileInfo($fileInfo);
-            $this->add($migration);
+            if ($fileInfo->isFile() && $fileInfo->getExtension() === $this->extension) {
+                $migration = UnitOfWorkFactory::buildFromSplFileInfo($fileInfo);
+                $this->add($migration);
+            }
         }
     }
 }

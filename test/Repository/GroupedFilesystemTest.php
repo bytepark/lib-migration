@@ -35,9 +35,9 @@ use Bytepark\Component\Migration\UnitOfWork\Workload;
 class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \FilesystemIterator
+     * @var \GlobIterator
      */
-    protected $filesystemIterator;
+    protected $source;
 
     /**
      * @var \Bytepark\Component\Migration\Repository
@@ -49,8 +49,8 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->filesystemIterator = new \FilesystemIterator(TEST_GROUPED_FILE_FIXTURE_PATH);
-        $this->repository = new GroupedFilesystem($this->filesystemIterator);
+        $this->source = new \FilesystemIterator(TEST_GROUPED_FILE_FIXTURE_PATH);
+        $this->repository = new GroupedFilesystem($this->source, 'mig');
     }
 
     /**
@@ -76,7 +76,7 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testFilesAreLoadedOnConstruction()
     {
-        static::assertEquals(count($this->filesystemIterator), $this->repository->count());
+        static::assertEquals(count($this->source), $this->repository->count());
     }
 
     public function testWorkloadsMatchFileContents()
