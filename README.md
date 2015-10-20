@@ -13,7 +13,7 @@ checks are the responsibility of the user.
 
 ## TODOS / Open Features
 
-- Add a CLI implementation (at best as own component)
+- Add a CLI implementation (at best as own component) See [https://github.com/bytepark/lib-migration-cli](https://github.com/bytepark/lib-migration-cli)
 - Add SQL Schema abstraction for database repository / connection
 - Add some error messaging/logging facility
 - Rename Repository interface to Location?
@@ -43,7 +43,7 @@ unit - in the latter case.
 
 As the library is to be used in the context of an application, and as applications
 are nowadays often parallelized, the Manager depends on a locking mechanism to 
-ensure mutually exclusive execution of the database migrations not already present
+ensure mutual exclusive execution of the database migrations not already present
 in the history repository.
 
 The four instances are injected during construction into the Manager class which
@@ -75,9 +75,9 @@ require 'vendor/autoload.php';
 
 ### Example Filesystem to DB
 
-The migration process scans a defined directory for files with the file extension
-_.mig_. The set of files is then diffed against the already migrated set, which is
-, in the example, persisted in a database table.
+The migration process scans a defined directory for files with the (default) file 
+extension _.mig_. The set of files is then diffed against the already migrated set, 
+which is, in the example, persisted in a database table.
 
 ### Migration file requirements
 
@@ -94,8 +94,9 @@ database.
 Will soon be linked here. Currently we know that the following bridges will be 
 provided, each depending on this component:
 
-* a Silex service provider
-* a Redaxo4 CMS bridge
+* a CLI bridge [https://github.com/bytepark/lib-migration-cli](https://github.com/bytepark/lib-migration-cli)
+* a Silex service provider [https://github.com/bytepark/migrationServiceProvider](https://github.com/bytepark/migrationServiceProvider)
+* a Redaxo4 CMS bridge [https://github.com/bytepark/migration-redaxo4](https://github.com/bytepark/migration-redaxo4)
 * a Symfony2 Bundle
 * a symfony1 plugin
  
