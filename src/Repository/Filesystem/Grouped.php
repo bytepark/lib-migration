@@ -1,72 +1,42 @@
 <?php
 /**
-* Class file of bytepark database migration Toolkit filesystem repository
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*
-* PHP version 5.3
-*
-* @category   Bytepark
-* @package    Migration
-* @subpackage Repository
-* @author     bytepark GmbH <code@bytepark.de>
-* @copyright  2014 - bytepark GmbH
-* @license    http://www.bytepark.de proprietary
-* @link       http://www.bytepark.de
-*/
+ * Class file of bytepark database migration Toolkit filesystem repository
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * PHP version 5.3
+ *
+ * @category   Bytepark
+ * @package    Migration
+ * @subpackage Repository
+ * @author     bytepark GmbH <code@bytepark.de>
+ * @copyright  2014 - bytepark GmbH
+ * @license    http://www.bytepark.de proprietary
+ * @link       http://www.bytepark.de
+ */
 
-namespace Bytepark\Component\Migration\Repository;
+namespace Bytepark\Component\Migration\Repository\Filesystem;
 
+use Bytepark\Component\Migration\Repository\AbstractFilesystem;
 use Bytepark\Component\Migration\Factory\UnitOfWorkFactory;
-use Bytepark\Component\Migration\Repository;
 
 /**
-* Filesystem repository
-*
-* The repository scans the filesystem for migrations in a grouped
-* subdirectory structure. The subdirectories are generated from the
-* unit of works uid.
-*
-* @category   Bytepark
-* @package    Migration
-* @subpackage Repository
-* @author     bytepark GmbH <code@bytepark.de>
-* @license    http://www.bytepark.de proprietary
-* @link       http://www.bytepark.de
-*/
-class GroupedFilesystem extends AbstractRepository
+ * Filesystem repository
+ *
+ * The repository scans the filesystem for migrations in a grouped
+ * subdirectory structure. The subdirectories are generated from the
+ * unit of works uid.
+ *
+ * @category   Bytepark
+ * @package    Migration
+ * @subpackage Repository
+ * @author     bytepark GmbH <code@bytepark.de>
+ * @license    http://www.bytepark.de proprietary
+ * @link       http://www.bytepark.de
+ */
+class Grouped extends AbstractFilesystem
 {
-    /**
-     * @var string
-     */
-    private $basePath;
-
-    /**
-     * @var string
-     */
-    private $extension;
-
-    /**
-     * Instantiates the repository for the underlying file system
-     *
-     * A file system iterator has to be injected.
-     *
-     * The default file extension that will be included in the scan is "mig".
-     *
-     * @param \FilesystemIterator $directory The iterator to use
-     * @param string              $extension The file extension to look for
-     *
-     * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
-     * @throws \InvalidArgumentException
-     */
-    public function __construct(\FilesystemIterator $directory, $extension = 'mig')
-    {
-        $this->basePath = $directory->getPath();
-        $this->extension = $extension;
-        $this->buildMigrations($directory);
-    }
-
     /**
      * @{inheritdoc}
      */
@@ -90,7 +60,7 @@ class GroupedFilesystem extends AbstractRepository
      * @throws \Bytepark\Component\Migration\Exception\UnitIsAlreadyPresentException
      * @throws \InvalidArgumentException
      */
-    private function buildMigrations(\FilesystemIterator $directory)
+    protected function buildMigrations(\FilesystemIterator $directory)
     {
         foreach ($directory as $fileInfo) {
             /* @var $fileInfo \SplFileInfo */

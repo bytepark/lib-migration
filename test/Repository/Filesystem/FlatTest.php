@@ -16,9 +16,9 @@
  * @link       http://www.bytepark.de
  */
 
-namespace Bytepark\Component\Migration\Test\Repository;
+namespace Bytepark\Component\Migration\Test\Repository\Filesystem;
 
-use Bytepark\Component\Migration\Repository\Filesystem;
+use Bytepark\Component\Migration\Repository\Filesystem\Flat;
 use Bytepark\Component\Migration\UnitOfWork;
 use Bytepark\Component\Migration\UnitOfWork\Uid;
 use Bytepark\Component\Migration\UnitOfWork\Workload;
@@ -33,10 +33,10 @@ use Bytepark\Component\Migration\UnitOfWork\Workload;
  * @license    http://www.bytepark.de proprietary
  * @link       http://www.bytepark.de
  */
-class FilesystemTest extends \PHPUnit_Framework_TestCase
+class FlatTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \GlobIterator
+     * @var \FilesystemIterator
      */
     protected $source;
 
@@ -51,7 +51,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new \FilesystemIterator(TEST_FILE_FIXTURE_PATH);
-        $this->repository = new Filesystem($this->source, 'mig');
+        $this->repository = new Flat($this->source, 'mig');
     }
 
     /**
@@ -70,7 +70,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        static::assertInstanceOf('Bytepark\Component\Migration\Repository\Filesystem', $this->repository);
+        static::assertInstanceOf('Bytepark\Component\Migration\Repository\Filesystem\Flat', $this->repository);
     }
 
     public function testFilesAreLoadedOnConstruction()

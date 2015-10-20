@@ -16,9 +16,9 @@
  * @link       http://www.bytepark.de
  */
 
-namespace Bytepark\Component\Migration\Test\Repository;
+namespace Bytepark\Component\Migration\Test\Repository\Filesystem;
 
-use Bytepark\Component\Migration\Repository\GroupedFilesystem;
+use Bytepark\Component\Migration\Repository\Filesystem\Grouped;
 use Bytepark\Component\Migration\UnitOfWork;
 use Bytepark\Component\Migration\UnitOfWork\Uid;
 use Bytepark\Component\Migration\UnitOfWork\Workload;
@@ -32,7 +32,7 @@ use Bytepark\Component\Migration\UnitOfWork\Workload;
  * @license    http://www.bytepark.de proprietary
  * @link       http://www.bytepark.de
  */
-class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
+class GroupedTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \GlobIterator
@@ -50,7 +50,7 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new \FilesystemIterator(TEST_GROUPED_FILE_FIXTURE_PATH);
-        $this->repository = new GroupedFilesystem($this->source, 'mig');
+        $this->repository = new Grouped($this->source, 'mig');
     }
 
     /**
@@ -71,7 +71,7 @@ class GroupedFilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessfulConstruction()
     {
-        static::assertInstanceOf('Bytepark\Component\Migration\Repository\GroupedFilesystem', $this->repository);
+        static::assertInstanceOf('Bytepark\Component\Migration\Repository\Filesystem\Grouped', $this->repository);
     }
 
     public function testFilesAreLoadedOnConstruction()

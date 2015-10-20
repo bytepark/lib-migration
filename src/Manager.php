@@ -63,7 +63,7 @@ class Manager
      *
      * @param Connection $connection        The connection used by the manager
      * @param Repository $sourceRepository  The repository with the source migrations
-     * @param Repository $historyRepository The repository with the executed migrations
+     * @param Repository $historyRepository The repository with the already executed migrations
      * @param Lock       $lock              The lock for atomicity
      */
     public function __construct(
@@ -81,6 +81,7 @@ class Manager
     /**
      * Dispatches the migration process
      *
+     * @throws Exception\LockNotAcquirableException
      * @throws Exception\HistoryHasSourceUnknownUnitsOfWorkException
      * @throws Exception\UnitIsAlreadyPresentException
      *
