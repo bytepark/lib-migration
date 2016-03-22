@@ -69,6 +69,7 @@ class Grouped extends AbstractFilesystem
                 $this->buildFromSubDirectory($subDirectory);
             }
         }
+        $this->sort();
     }
 
     /**
